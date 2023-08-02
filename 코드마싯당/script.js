@@ -447,4 +447,5 @@ window.onload = function () {
             }
         }
     }
+    document.getElementById('complete_option_btn').addEventListener('click', complete_option);
 };
