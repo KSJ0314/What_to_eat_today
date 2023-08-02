@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오늘 뭐 먹지</title>
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+  <script async src="/script.js"></script>
+  <script src="https://kit.fontawesome.com/64319e1cb9.js" crossorigin="anonymous"></script>
+  <!-- jquery CDN -->
+  <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+    crossorigin="anonymous"></script>
+  <!-- services와 clusterer, drawing 라이브러리 불러오기 -->
+  <script type="text/javascript"
+    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6d77a7fd96523299409a856fca87deb5&libraries=services,clusterer,drawing"></script>
+</head>
+
+<body id="body">
+  <div id="head">
+    <h1>오늘 뭐 먹지 !?</h1>
+    <nav>
+      <a href="#">주소&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="modal_btn">
+        <div class="black_bg"></div>
+        <div class="modal_wrap">
+          <div class="modal_close"><button type="button"></button></div>
+          <div>
+            <div id="search_parent">
+              <p id="s">주소 검색&nbsp;&nbsp;</p><input type="text" id="search_address">
+            </div>
+            <div id="search_map"></div>
+            <button type="button" id="complete_search_btn">완료</button>
+          </div>
+        </div>
+
+      </a>
+      오늘의 날씨<a href="#" id="weather">
+      </a>
+
+      <a href="#">
+        <i id="option_btn" class="fa-solid fa-bars fa-lg" style="color: #000000;"></i>
+        <div class="black_bg2"></div>
+        <div class="modal_wrap2">
+          <div class="modal_close2"><button type="button"></button></div>
+          <div>
+            <form id="option_list">
+              <fieldset>
+                <legend>설정</legend>
+                <p>식당 거리 선택</p>
+                <input id="position" type="range" min="200" max="1000" step="200">
+                <img src="/imges/distance.png"> <!--최소거리 200m, 400m ~ 최대거리1km -->
+                <p>카테고리 선택</p>
+                <div id="cate">
+                  <input id="koreanFood" name="restaurant" type="checkbox" checked>
+                  <label for="koreanFood">한식&nbsp;&nbsp;&nbsp;</label>
+                  <input id="japaneseFood" name="restaurant" type="checkbox" checked>
+                  <label for="japaneseFood">일식&nbsp;&nbsp;&nbsp;</label>
+                  <input id="chineseFood" name="restaurant" type="checkbox" checked>
+                  <label for="chineseFood">중식&nbsp;&nbsp;&nbsp;</label>
+                  <input id="westernFood" name="restaurant" type="checkbox" checked>
+                  <label for="westernFood">양식&nbsp;&nbsp;&nbsp;</label>
+                  <input id="snackBar" name="restaurant" type="checkbox" checked>
+                  <label for="snackBar">분식</label>
+                </div>
+                <p>추천 방식</p>
+                <input id="weatherr" name="restaurant" type="radio" value="날씨" checked>
+                <label for="weatherr">날씨</label>
+                <input id="randomm" name="restaurant" type="radio" value="랜덤">
+                <label for="randomm">랜덤</label>
+              </fieldset>
+            </form>
+            <button type="button" id="complete_option_btn" onclick="complete_option()">완료</button>
+          </div>
+        </div>
+      </a>
+
+    </nav>
+  </div> <!-- head 닫는 div-->
+
+  <div id="box_parent">
+
+    <div id="box_child1"> <!-- 왼쪽box - 식당추천 -->
+      <div class="food_box1">
+        <!-- &nbsp;<i class="fa-solid fa-map fa-lg"
+          style="color: #101360;"></i><b>&nbsp;지도</b> -->
+      </div>
+    </div> <!-- box_child1 닫는 div-->
+
+    <div id="box_child2"> <!--오른쪽box (지도, 버튼 들어감) -->
+      <div id="mapBox"></div> <!-- 맵 박스-->
+      <!-- 랜덤 추천 버튼-->
+      <button id="random_button" type="button">추천 버튼&nbsp;&nbsp;
+        <i class="fa-solid fa-utensils fa-spin-pulse fa-sm" style="color: rgb(19, 19, 104);"></i></button>
+    </div> <!-- box_child2 닫는 div-->
+
+  </div> <!-- box_parent 닫는 div-->
+</body>
