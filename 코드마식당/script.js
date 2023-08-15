@@ -125,6 +125,34 @@ window.onload = function () {
                 });
         }
         cateNum = j * initNum;
+        document.getElementById('count').innerHTML = "0 / " + cateNum;
+
+        // 검색 된 항목들 셔플
+        var temp;
+        for (i in arr_address_name) {
+            var tempNum = Math.floor(Math.random()*cateNum);
+
+            temp = arr_address_name[i];
+            arr_address_name[i] = arr_address_name[tempNum];
+            arr_address_name[tempNum] = temp;
+
+            temp = arr_place_url[i];
+            arr_place_url[i] = arr_place_url[tempNum];
+            arr_place_url[tempNum] = temp;
+
+            temp = arr_category_name[i];
+            arr_category_name[i] = arr_category_name[tempNum];
+            arr_category_name[tempNum] = temp;
+
+            temp = arr_category_name_1[i];
+            arr_category_name_1[i] = arr_category_name_1[tempNum];
+            arr_category_name_1[tempNum] = temp;
+
+            temp = arr_category_name_2[i];
+            arr_category_name_2[i] = arr_category_name_2[tempNum];
+            arr_category_name_2[tempNum] = temp;
+
+        }
     }
 
 
@@ -166,13 +194,12 @@ window.onload = function () {
     }
 
     function mapinit() {
+        document.getElementById('box_child1').style.backgroundImage = "url('/imges/main_WeatherLoading.jpg')";
         displayMarker(latlon, 0);
         map[0].setCenter(new kakao.maps.LatLng(latlon.y, latlon.x));
         categorySerch(latlon, radio_para);
         getWeather(dfs_xy_conv(latlon.y, latlon.x));
         coo2add(latlon, 'modal_btn');
-        document.getElementById('box_child1').innerHTML = null;
-        document.getElementById('box_child1').style.backgroundImage = "url('/imges/main.jpg')";
     }
 
     // 날씨 api
@@ -235,6 +262,10 @@ window.onload = function () {
                 document.getElementById('weather').innerHTML = '<i class="fa-solid fa-' + weatherInnerHTML + ' fa-fade fa-sm"></i>'; // 오늘의 날씨 아이콘 생성
                 scoreInit();
                 scoreAdd(data);
+                document.getElementById('box_child1').style.backgroundImage = "url('/imges/main_search2.png')";
+                document.getElementById('main_count').innerHTML = cateNum;
+                thisCount = 0;
+                document.getElementById('count').innerHTML = thisCount + " / " + cateNum;
             }
         );
     }
@@ -339,7 +370,7 @@ window.onload = function () {
     function scoreInit() {
         arr_score = []; // 초기화
         for (i = 0; i < cateNum; i++) {
-            arr_score[i] = 0;   // 점수 배열 150개에 0 넣기 
+            arr_score[i] = 0;   // 검색된 수 만큼 점수 배열에 0 넣기 
         }
     }
     function scoreAdd(data) { //  날씨에 따른 음식 추천 함수 
@@ -373,12 +404,15 @@ window.onload = function () {
         arr_score_from = Array.from(new Set(arr_score)); // 중복값 제외 전역변수 설정 
         arr_score_from.sort((a, b) => b - a); // 내림차순 정렬
     }
+    var thisCount = 0;
     function numberRoom() { // score배열 내림차순(큰값부터)으로 방 번호 찾는 함수 
         while (true) {
             if (arr_score_from.length) { // num배열 길이만큼 slice할때마다 길이가 줄어듬 
                 for (i in arr_score) { // score 배열 길이 만큼 반복
                     if (arr_score_from[0] == arr_score[i]) { // num 0번에 해당하는 score배열을 찾으면?
                         arr_score[i] = -1; // 다시 검색하지 않게 -1로 변경
+                        thisCount++;
+                        document.getElementById('count').innerHTML = thisCount + " / " + cateNum;
                         return i; // score 방번호 출력
                     }
                 }
@@ -389,6 +423,7 @@ window.onload = function () {
         }
     }
     function randomWeather() { // 날씨가 적용 됐을 때 함수
+        document.getElementById('box_child1').style.backgroundImage = "none";
         var url_Weather = numberRoom(); // url에 numberRoom index값 넣기
         if (url_Weather == -1) { // urlWeather 방을 아예 못찾았을때는 
             document.getElementById('box_child1').innerHTML = null;
@@ -398,6 +433,7 @@ window.onload = function () {
     }
 
     function randomGo() {
+        document.getElementById('box_child1').style.backgroundImage = "none";
         var urlran = Math.floor(Math.random() * cateNum);
         but(urlran);
     }
@@ -406,6 +442,8 @@ window.onload = function () {
 
     // 옵션 완료 버튼
     function complete_option() {
+        document.getElementById('box_child1').innerHTML = null;
+        document.getElementById('box_child1').innerHTML = '<div id="main_count"></div>';
         document.querySelector('.modal_wrap2').style.display = 'none';
         document.querySelector('.black_bg2').style.display = 'none';
         if (document.getElementById('randomm').checked) {
@@ -448,4 +486,5 @@ window.onload = function () {
         }
     }
     document.getElementById('complete_option_btn').addEventListener('click', complete_option);
+
 };

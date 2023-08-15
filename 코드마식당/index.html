@@ -23,6 +23,7 @@
   <div id="head">
     <h1>오늘 뭐 먹지 !?</h1>
     <nav>
+      <a href="#" id="count"></a>
       <a href="#">주소&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="modal_btn">
         <div class="black_bg"></div>
         <div class="modal_wrap">
@@ -37,7 +38,7 @@
         </div>
 
       </a>
-      오늘의 날씨<a href="#" id="weather">
+      오늘의 날씨<a href="#" id="weather"><i class="fa-solid fa-spinner fa-spin-pulse fa-fade fa-sm"></i></a>
       </a>
 
       <a href="#">
@@ -83,10 +84,7 @@
   <div id="box_parent">
 
     <div id="box_child1"> <!-- 왼쪽box - 식당추천 -->
-      <div class="food_box1">
-        <!-- &nbsp;<i class="fa-solid fa-map fa-lg"
-          style="color: #101360;"></i><b>&nbsp;지도</b> -->
-      </div>
+      <div id="main_count"></div>
     </div> <!-- box_child1 닫는 div-->
 
     <div id="box_child2"> <!--오른쪽box (지도, 버튼 들어감) -->

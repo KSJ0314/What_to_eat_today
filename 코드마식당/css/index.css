@@ -145,6 +145,14 @@ nav a:hover{ /*상단 제목+메뉴바 위에 커서 올렸을 때*/
   overflow: hidden;
 }
 
+#main_count {
+  position: relative;
+  left: 200px;
+  top: 470px;
+  font-size: 50px;
+  font-weight: 900;
+}
+
 iframe {
   position: relative;
   width: 1000px;
