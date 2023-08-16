@@ -22,7 +22,11 @@
 ## :star: 추가 사항
 
 * 보완 기간 : 23.08.10~23.08.17
-* 보완 내용
 1. Main Box 이미지 수정
+![본선 보완 사항 2](https://github.com/KSJ0314/codemasickdang/assets/132119447/31da93c2-a542-4631-a5fb-b5c95f0ccc7d)
+
 2. 로딩 표시
+![본선 보완 사항 3](https://github.com/KSJ0314/codemasickdang/assets/132119447/32db7263-6c04-4a76-bcb6-91e1f9dd4f03)
+
 3. 출력한 식당 / 검색된 식당의 수 표시
+![본선 보완 사항 1](https://github.com/KSJ0314/codemasickdang/assets/132119447/581c6c75-758e-41e6-9c3d-1bcad83c0d86)
