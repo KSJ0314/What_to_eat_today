@@ -35,8 +35,11 @@
 ![본선 보완 사항 1](https://github.com/KSJ0314/codemasickdang/assets/132119447/581c6c75-758e-41e6-9c3d-1bcad83c0d86)
 
 5. 같은 지역, 같은 날씨인 경우 항상 같은 순서로 식당이 출력되는 문제 해결
+   
    : 검색된 식당을 동일 점수끼리 셔플하여 해결
+   
      (지도 + 카테고리 검색 rest api function인 categorySerch() 내부에서 셔플 구현)
+   
    ```JavaScript
          var temp;
          for (i in arr_address_name) {
