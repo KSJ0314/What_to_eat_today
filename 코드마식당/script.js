@@ -194,7 +194,7 @@ window.onload = function () {
     }
 
     function mapinit() {
-        document.getElementById('box_child1').style.backgroundImage = "url('/imges/main_WeatherLoading.jpg')";
+        document.getElementById('box_child1').style.backgroundImage = "url('/imges/main_WeatherLoading.png')";
         displayMarker(latlon, 0);
         map[0].setCenter(new kakao.maps.LatLng(latlon.y, latlon.x));
         categorySerch(latlon, radio_para);
@@ -262,7 +262,7 @@ window.onload = function () {
                 document.getElementById('weather').innerHTML = '<i class="fa-solid fa-' + weatherInnerHTML + ' fa-fade fa-sm"></i>'; // 오늘의 날씨 아이콘 생성
                 scoreInit();
                 scoreAdd(data);
-                document.getElementById('box_child1').style.backgroundImage = "url('/imges/main_search2.png')";
+                document.getElementById('box_child1').style.backgroundImage = "url('/imges/main_search2.jpg')";
                 document.getElementById('main_count').innerHTML = cateNum;
                 thisCount = 0;
                 document.getElementById('count').innerHTML = thisCount + " / " + cateNum;
