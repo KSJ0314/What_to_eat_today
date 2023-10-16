@@ -107,7 +107,7 @@ window.onload = function () {
             $.ajax({
                 method: "GET",
                 url: "https://dapi.kakao.com/v2/local/search/category.json?category\_group\_code=FD6&page=" + j + "&x=" + latlon.x + "&y=" + latlon.y + "&radius=" + rad + "",
-                headers: { Authorization: "KakaoAK 9fc095edb70a6304836b3a8f6b980ab8" },
+                headers: { Authorization: "KEY" },
                 async: false // ajax 2개 이상 사용시 필요
             })
                 .done(function (msg) {
@@ -241,7 +241,7 @@ window.onload = function () {
         currentTime += minutes;
 
         $.getJSON(
-            "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=WUQsY6Sq8A%2FnvtZJqZjLhgqNL5Fg5tVdT0c4WPWJ%2F%2F0UXSkpD7r2C3yppDZbv07LBlzbYY%2FyoT7KNLTpfQwAPA%3D%3D&pageNo=1&numOfRows=1000&dataType=JSON&base_date=" + todayString + "&base_time=" + currentTime + "&nx=" + xy.x + "&ny=" + xy.y + "",
+            "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=KEY&pageNo=1&numOfRows=1000&dataType=JSON&base_date=" + todayString + "&base_time=" + currentTime + "&nx=" + xy.x + "&ny=" + xy.y + "",
             function (data) {
 
                 var weatherInnerHTML = "";  // 오늘의 날씨 아이콘 입력값
