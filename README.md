@@ -1,6 +1,6 @@
 
 ## :blue_book: 프로젝트 요약
-![포스터](https://github.com/KSJ0314/What_to_eat_today/assets/132119447/07d32d4e-7a6b-49be-8763-4f1c753155c7){:style="width:100px;"}
+<img style="width:100px;" alt="포스터" src="https://github.com/KSJ0314/What_to_eat_today/assets/132119447/07d32d4e-7a6b-49be-8763-4f1c753155c7">
 
 이 프로젝트는 광전IT에서 주최한 제 2회 코드마스터 선발대회 참여를 위해 제작되었습니다.
 대회 주제에 따라 오픈 API 활용을 주 목표로 기획되었습니다.
