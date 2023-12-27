@@ -6,7 +6,7 @@
    <li>어느 정도의 css와 JS를 이제 막 시작한 단계에서 만들 수 있는 프로젝트로 개발 학습 초기인 분들께 좋은 참고자료가 되기를 바랍니다.</li>
 </ul>
 <kbd style="width:40%; border:1px solid lightgray;">
-   <img alt="포스터" src="https://github.com/KSJ0314/What_to_eat_today/assets/132119447/07d32d4e-7a6b-49be-8763-4f1c753155c7">
+   <img style="width:100%;" alt="포스터" src="https://github.com/KSJ0314/What_to_eat_today/assets/132119447/07d32d4e-7a6b-49be-8763-4f1c753155c7">
 </kbd>
 
 ---
