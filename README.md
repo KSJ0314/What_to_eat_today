@@ -7,6 +7,8 @@
 </ul>
 <img style="width:40%;" alt="포스터" src="https://github.com/KSJ0314/What_to_eat_today/assets/132119447/07d32d4e-7a6b-49be-8763-4f1c753155c7">
 
+---
+
 ## :blue_book: 프로젝트 요약
 날씨에 따라 맞춤형 식당을 추천해주는 사이트입니다.
 
