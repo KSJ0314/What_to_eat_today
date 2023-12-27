@@ -1,5 +1,5 @@
 ## :ledger: 프로젝트 개요
-<ul style="list-style-type: none;">
+<ul style="list-style: none;">
    <li>이 프로젝트는 광전IT에서 주최한 제 2회 코드마스터 선발대회 참여를 위해 제작되었습니다.</li>
    <li>대회 주제에 따라 오픈 API 활용을 주 목표로 기획되었습니다.</li>
    <li>자바 책 한권도 채 끝내지 못한 개발 6주차 꿈나무들의 프로젝트라 CSS로 디자인한 Html과 JS 기능 정도 구현된 프로젝트입니다.</li>
