@@ -8,6 +8,10 @@
 &emsp;&emsp;<kbd style="width:300px; border: 1px solid ligthgray;">
    <img style="width:300px;" alt="포스터" src="https://github.com/KSJ0314/What_to_eat_today/assets/132119447/07d32d4e-7a6b-49be-8763-4f1c753155c7">
 </kbd>
+&emsp;&emsp;<kbd style="width:300px; border: 1px solid ligthgray;">
+   <img style="width:300px;" alt="상장" src="https://github.com/KSJ0314/What_to_eat_today/assets/132119447/99a1da07-c12f-479c-9ae9-c4f00b012190">
+</kbd>
+
 
 
 ---
