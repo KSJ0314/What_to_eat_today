@@ -1,0 +1,4 @@
+사용한 api
+geolocation : 현재 위치 반환 api, 바로 사용 가능
+카카오 카테고리 검색 api : 위도와 경도와 반경값을 매개변수로 받아 주소, url(업체 정보 페이지), 카테고리값을 반환
+https://developers.kakao.com/docs/latest/ko/local/dev-guide#search-by-category
