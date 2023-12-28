@@ -1,8 +1,11 @@
+// 페이지 로딩 후 작동해야 하는 코드라 window.onload를 이용하였습니다.
+// html파일에서 js 링크를 body 하단부에 작성하면 window.onload를 사용하지 않아도 됩니다.
 window.onload = function () {
+
+    // 위,경도 값을 기상청에서 사용하는 격자정보로 변환하는 function입니다.
+    // 기상청에서 제공하는 날씨정보 API는 격자값을 사용해서 필요합니다.
+    // 매개변수 v1과 v2는 위도와 경도값입니다.
     function dfs_xy_conv(v1, v2) {
-        //
-        // LCC DFS 좌표변환 ( code : "toXY"(위경도->좌표, v1:위도, v2:경도), "toLL"(좌표->위경도,v1:x, v2:y) )
-        //
         var DEGRAD = Math.PI / 180.0;
 
         var re = 6371.00877 / 5.0;  // 지구 반경 / 격자 간격 (km)
@@ -36,14 +39,18 @@ window.onload = function () {
         //geolocation을 이용해 접속 위치를 얻어오기
         navigator.geolocation.getCurrentPosition(displayLocation);
     }
+    function displayLocation(position) {
+        latlon.y = position.coords.latitude; // 위도
+        latlon.x = position.coords.longitude; // 경도
+        mapinit();
+    }
 
     var lat = 35.1741212; // 초기값, 전대후문
     var lon = 126.9135834;  // 초기값, 전대후문
     var latlon = { y: lat, x: lon };
-    // var xy = dfs_xy_conv(lat, lon);
 
     var map = []; // 메인 지도창, 주소 설정 지도창
-
+    // 지도를 생성하는 function입니다.
     function mapCreate(id, lv, num) {
         var mapContainer = document.getElementById(id), // 지도를 표시할 div 
             mapOption = {
@@ -54,7 +61,6 @@ window.onload = function () {
         // 지도를 생성합니다    
         map[num] = new kakao.maps.Map(mapContainer, mapOption);
     }
-
     mapCreate('mapBox', 2, 0);
 
     var imageSrc = 'imges/maker.png', // 마커이미지의 주소입니다    
@@ -62,7 +68,7 @@ window.onload = function () {
         imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합
 
     var marker = [];  // main지도 마커, 주소창 마커
-
+    // 마커를 생성하는 function입니다.
     function makerCreate(num) {
         marker[num] = new kakao.maps.Marker({
             map: map[num],
@@ -70,7 +76,6 @@ window.onload = function () {
             image: new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
         });
     }
-
     makerCreate(0); // 기존 마커 없애기를 구현하기 위해 marker 초기화
 
     // 지도에 마커를 표시하는 함수입니다
@@ -84,6 +89,7 @@ window.onload = function () {
         });
     }
 
+    
     var arr_address_name = [];  // 주소
     var arr_place_url = [];  // url
     var arr_category_name = []; // 카테고리 full name
@@ -91,27 +97,27 @@ window.onload = function () {
     var arr_category_name_2 = []; // 카테고리 항목 2
     var cateNum = 0;
 
-    // 지도 + 카테고리 검색 rest api
+    // 카카오 카테고리 검색 rest api, 좌표값은 주지 않아서 지도를 띄우려면 주소->좌표 변환이 필요합니다.
     function categorySerch(latlon, rad) {
-        arr_address_name = [];  // 배열 초기화
-        arr_place_url = [];
-        arr_category_name = [];
-        arr_category_name_1 = [];
-        arr_category_name_2 = [];
+        arr_address_name = [];  // 주소
+        arr_place_url = []; // 식당 정보 페이지 url
+        arr_category_name = []; // 카테고리 풀네임
+        arr_category_name_1 = [];   // 카테고리 첫번 째 항목
+        arr_category_name_2 = [];   // 카테고리 두번 째 항목
 
         var j = 0;
-        var cateRun = true;
-        var initNum = 0;
+        var cateRun = true; // 아래의 while문을 돌리기 위해 사용, while의 종료 조건이 if문에 있어서 while(true)와 if문에 break를 걸면 break가 안걸릴 수 있다고 판단하여 문법 오류 발생
+        var cateNum = 0;    // 총 검색 개수를 반환하기 위해 선언
         while (cateRun) { // page 1~10번 받기
             j++;
             $.ajax({
                 method: "GET",
                 url: "https://dapi.kakao.com/v2/local/search/category.json?category\_group\_code=FD6&page=" + j + "&x=" + latlon.x + "&y=" + latlon.y + "&radius=" + rad + "",
-                headers: { Authorization: "KEY" },
+                headers: { Authorization: "KEY" },  // 카카오 developers에서 발급받은 API key를 입력해주세요.
                 async: false // ajax 2개 이상 사용시 필요
             })
                 .done(function (msg) {
-                    initNum = msg.documents.length;
+                    cateNum += msg.documents.length;    // 검색 된 수만큼 값 추가
                     for (var i = 0; i < msg.documents.length; i++) {
                         arr_address_name.push(msg.documents[i].address_name); // 주소에 값 추가
                         arr_place_url.push(msg.documents[i].place_url); // url에 값 추가
@@ -124,12 +130,11 @@ window.onload = function () {
                     }
                 });
         }
-        cateNum = j * initNum;
-        document.getElementById('count').innerHTML = "0 / " + cateNum;
+        document.getElementById('count').innerHTML = "0 / " + cateNum;  // 총 검색 수를 메인화면에 출력하기 위한 구문
 
-        // 검색 된 항목들 셔플
+        // 검색 된 항목들 셔플, 동일 지역에서 같은 날씨인 경우 항상 추천해주는 식당의 순서가 같아서 높은 점수의 식당을 우선 추천하되 순서는 섞어준다.
         var temp;
-        for (i in arr_address_name) {
+        for (let i = 0; i < arr_address_name.length; i++) {
             var tempNum = Math.floor(Math.random()*cateNum);
 
             temp = arr_address_name[i];
@@ -159,25 +164,29 @@ window.onload = function () {
     // 주소-좌표 변환 객체를 생성합니다
     var geocoder = new kakao.maps.services.Geocoder();
 
+    // 식당 정보(url)을 화면에 띄워주고 지도에 해당 식당을 표시해주는 function입니다.
     function but(urlnum) {
+
+        // url을 iframe으로 화면에 띄워줍니다.
+        // iframe은 페이지에 내부에 다른 html페이지를 포함시키는 태그입니다. 사용하지 않는것을 권고하니 주의가 필요합니다.
         document.querySelector('#box_child1').innerHTML = "<iframe src='" + arr_place_url[urlnum] + "'></iframe>";
+
         // 주소로 좌표를 검색합니다
         geocoder.addressSearch(arr_address_name[urlnum], function (result, status) {
-
             // 정상적으로 검색이 완료됐으면 
             if (status === kakao.maps.services.Status.OK) {
 
-                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
                 // 결과값으로 받은 위치를 마커로 표시합니다
                 displayMarker(result[0], 0);
-
+                
                 // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
                 map[0].setCenter(coords);
             }
         });
     }
 
+    // 좌표로 주소를 반환하여 페이지에 출력하는 function입니다.
     function coo2add(latlng, id) {
         geocoder.coord2Address(latlng.x, latlng.y, function (result, status) {
             if (status === kakao.maps.services.Status.OK) { // 정상적으로 검색이 완료됐으면 
@@ -185,26 +194,24 @@ window.onload = function () {
             }
         });
     }
+    
+    var radio_para = 600;   // 검색할 반경 초기값은 600m
 
-    var radio_para = 600;
-    function displayLocation(position) {
-        latlon.y = position.coords.latitude; // 위도
-        latlon.x = position.coords.longitude; // 경도
-        mapinit();
-    }
-
+    // 초기 세팅 function입니다. 사이트 진입 시 현 위치값을 받은 후, 주소 검색으로 중심 좌표가 바뀔 때, 옵션 변경할 때 필요한 function들을 모아뒀습니다.
     function mapinit() {
-        document.getElementById('box_child1').style.backgroundImage = "url('/imges/main_WeatherLoading.png')";
-        displayMarker(latlon, 0);
-        map[0].setCenter(new kakao.maps.LatLng(latlon.y, latlon.x));
-        categorySerch(latlon, radio_para);
-        getWeather(dfs_xy_conv(latlon.y, latlon.x));
-        coo2add(latlon, 'modal_btn');
+        document.getElementById('box_child1').style.backgroundImage = "url('/imges/main_WeatherLoading.png')";  // 로딩 중 이미지 출력
+        displayMarker(latlon, 0);   // 메인화면 지도에 마커 표시
+        map[0].setCenter(new kakao.maps.LatLng(latlon.y, latlon.x));    // 메인화면 지도 중심변경
+        categorySerch(latlon, radio_para);  // 식당 검색
+        getWeather(dfs_xy_conv(latlon.y, latlon.x));    // 날씨 검색
+        coo2add(latlon, 'modal_btn');   // 메인화면에 주소 표시
     }
 
-    // 날씨 api
+    // 기상청의 날씨 검색 API을 $.getJSON을 이용해 호출하는 function입니다.
     function getWeather(xy) {
 
+
+        // getJSON으로 데이터를 반환받으려면 url에 날짜, 시간, 좌표를 써주어야합니다. 정해진 형식대로 써주어야 하기에 날짜와 시간을 형식에 맞게 변환해야합니다.
         var today = new Date(); // Date객체
 
         var year = today.getFullYear(); // 년
@@ -216,11 +223,13 @@ window.onload = function () {
             todayString += '0';
         }
         todayString += month;
+
         if (date < 10) {  // date가 한자리 수 일 때 0 추가 (07일)
             todayString += '0';
         }
 
-        var hours = today.getHours(); // 시
+        var hours = today.getHours(); // 시간
+        // 현재 시간이 00시인경우 이전 날짜로 검색해야합니다.
         if (hours == 0) {
             hours = 24;
             date--;
@@ -228,7 +237,7 @@ window.onload = function () {
 
         todayString += date;
 
-        hours--;  // (업데이트 느릴 수 있어서 1시간 전 데이터로 변경)
+        hours--;  // (기상청에서 제공하는 데이터의 업데이트가 느릴 수 있어서 1시간 전 데이터로 변경)
         var minutes = today.getMinutes();  // 분
         var currentTime = '';  // 현 시간 변수 ('0705' 형식으로 표현)
         if (hours < 10) {
@@ -240,34 +249,111 @@ window.onload = function () {
         }
         currentTime += minutes;
 
+
+
         $.getJSON(
             "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=KEY&pageNo=1&numOfRows=1000&dataType=JSON&base_date=" + todayString + "&base_time=" + currentTime + "&nx=" + xy.x + "&ny=" + xy.y + "",
             function (data) {
-
-                var weatherInnerHTML = "";  // 오늘의 날씨 아이콘 입력값
-
-                if (data.response.body.items.item[18].fcstValue == 1) { // 맑음
-                    document.getElementById('body').style.backgroundImage = 'url(../imges/sun.jpg)';
-                    weatherInnerHTML = "sun";
-                } else if (data.response.body.items.item[6].fcstValue == 1 || data.response.body.items.item[6].fcstValue == 2 || data.response.body.items.item[6].fcstValue == 5 || data.response.body.items.item[6].fcstValue == 6) {  // 비
-                    document.getElementById('body').style.backgroundImage = 'url(../imges/rain.jpg)';
-                    weatherInnerHTML = "umbrella";
-                } else if (data.response.body.items.item[6].fcstValue == 3 || data.response.body.items.item[6].fcstValue == 7) {  // 눈
-                    document.getElementById('body').style.backgroundImage = 'url(../imges/snow2.jpg)';
-                    weatherInnerHTML = "snowflake";
-                } else {  // 흐림
-                    document.getElementById('body').style.backgroundImage = 'url(../imges/cloudy.jpg)';
-                    weatherInnerHTML = "cloud";
-                }
-                document.getElementById('weather').innerHTML = '<i class="fa-solid fa-' + weatherInnerHTML + ' fa-fade fa-sm"></i>'; // 오늘의 날씨 아이콘 생성
-                scoreInit();
-                scoreAdd(data);
+                iconInit(data); // 아이콘 생성
+                scoreInit(data);
                 document.getElementById('box_child1').style.backgroundImage = "url('/imges/main_search2.jpg')";
                 document.getElementById('main_count').innerHTML = cateNum;
                 thisCount = 0;
                 document.getElementById('count').innerHTML = thisCount + " / " + cateNum;
             }
         );
+    }
+
+    // 메인화면에 현재 날씨의 아이콘을 출력하는 function입니다.
+    function iconInit(data){
+        var weather = "";
+        if (data.response.body.items.item[18].fcstValue == 1) { // 맑음
+            document.getElementById('body').style.backgroundImage = 'url(../imges/sun.jpg)';
+            weather = "sun";
+        } else if (data.response.body.items.item[6].fcstValue == 1 || data.response.body.items.item[6].fcstValue == 2 || data.response.body.items.item[6].fcstValue == 5 || data.response.body.items.item[6].fcstValue == 6) {  // 비
+            document.getElementById('body').style.backgroundImage = 'url(../imges/rain.jpg)';
+            weather = "umbrella";
+        } else if (data.response.body.items.item[6].fcstValue == 3 || data.response.body.items.item[6].fcstValue == 7) {  // 눈
+            document.getElementById('body').style.backgroundImage = 'url(../imges/snow2.jpg)';
+            weather = "snowflake";
+        } else {  // 흐림
+            document.getElementById('body').style.backgroundImage = 'url(../imges/cloudy.jpg)';
+            weather = "cloud";
+        }
+        // 부트스트랩을 이용해 아이콘을 생성합니다.
+        document.getElementById('weather').innerHTML = '<i class="fa-solid fa-' + weather + ' fa-fade fa-sm"></i>';
+    }
+
+    var arr_score; // 검색된 식당 각각에 해당되는 점수 배열 선언 
+    var arr_score_from = [];    // 점수의 종류
+    
+    // 날씨에 따라 음식에 점수를 부여하는 function입니다. 개발자 임의로 특정 카테고리에 일정 점수를 부여했습니다.
+    // ai를 학습하시는 분이라면 검증된 데이터로 점수를 부여하도록 수정해보면 좋을 것 같습니다.
+    function scoreInit(data) {
+        var arr_menu = [ // 메뉴 배열 선언 26개 
+            "해물,생선", // 0 
+            "양꼬치",  //1
+            "국밥", // 2
+            "한정식", // 3
+            "초밥,롤",// 4
+            "일본식라면", //5 
+            "일본식주점", //6
+            "버거킹", //7 
+            "국수", // 8
+            "호프,요리주점", //9
+            "제과,베이커리", // 10
+            "육류,고기", //11
+            "떡볶이", // 12
+            "인도음식", // 13
+            "맥도날드", // 14 
+            "동남아음식", // 15
+            "감자탕", // 16
+            "곰탕", // 17
+            "일식집", // 18
+            "피자", // 19
+            "교촌치킨", //20
+            "BHC치킨", // 21
+            "퓨전한식", // 22
+            "샌드위치", // 23
+            "아이스크림", // 24
+            "맘스터치" // 25
+        ];
+        arr_score = []; // 초기화
+        // 검색된 수 만큼 점수 배열에 0 넣기 
+        for (i = 0; i < cateNum; i++) {
+            arr_score[i] = 0;
+        }
+        // 검색값을 순회하며 날씨에 따라 일정 점수를 부여
+        for (i = 0; i < cateNum; i++) {
+            if (data.response.body.items.item[24].fcstValue >= 27) {  // 27도 이상이면 
+                if (arr_category_name_2[i] == arr_menu[8] || arr_category_name_2[i] == arr_menu[15] || arr_category_name_2[i] == arr_menu[24] || arr_category_name_2[i] == arr_menu[13]) { arr_score[i] += 3; } //더운 날씨에 어울리는 음식 3점 부여
+            }
+
+            if (data.response.body.items.item[24].fcstValue <= 26 || data.response.body.items.item[24].fcstValue >= 20) { // 날씨 20~26도
+                if (arr_category_name_2[i] == arr_menu[4] || arr_category_name_2[i] == arr_menu[7] || arr_category_name_2[i] == arr_menu[10] || arr_category_name_2[i] == arr_menu[11] || arr_category_name_2[i] == arr_menu[12] || arr_category_name_2[i] == arr_menu[14]
+                    || arr_category_name_2[i] == arr_menu[18] || arr_category_name_2[i] == arr_menu[19] || arr_category_name_2[i] == arr_menu[20] || arr_category_name_2[i] == arr_menu[21] || arr_category_name_2[i] == arr_menu[22] || arr_category_name_2[i] == arr_menu[23] || arr_category_name_2[i] == arr_menu[25]) {
+                    arr_score[i] += 3;
+                } // 선선한 날씨에 어울리는 음식에 3점 부여 
+            }
+
+            if (data.response.body.items.item[24].fcstValue <= 19) {
+                if (arr_category_name_2[i] == arr_menu[0] || arr_category_name_2[i] == arr_menu[1] || arr_category_name_2[i] == arr_menu[2] || arr_category_name_2[i] == arr_menu[5] || arr_category_name_2[i] == arr_menu[6] || arr_category_name_2[i] == arr_menu[9] || arr_category_name_2[i] == arr_menu[16] || arr_category_name_2[i] == arr_menu[17]) {
+                    arr_score[i] += 3;
+                } // 추운 날씨에 어울리는 음식 3점 부여 
+            }
+
+
+            if (data.response.body.items.item[6].fcstValue == 0) {
+                if (arr_category_name_2[i] == arr_menu[3] || arr_category_name_2[i] == arr_menu[4] || arr_category_name_2[i] == arr_menu[7] || arr_category_name_2[i] == arr_menu[10] || arr_category_name_2[i] == arr_menu[14] || arr_category_name_2[i] == arr_menu[18] || arr_category_name_2[i] == arr_menu[19] || arr_category_name_2[i] == arr_menu[22] || arr_category_name_2[i] == arr_menu[23] || arr_category_name_2[i] == arr_menu[25]) { arr_score[i] += 1; }
+                // 강수 없을 때 1점 부여
+            }
+
+            else if (arr_category_name_2[i] == arr_menu[2] || arr_category_name_2[i] == arr_menu[5] || arr_category_name_2[i] == arr_menu[6] || arr_category_name_2[i] == arr_menu[9] || arr_category_name_2[i] == arr_menu[16] || arr_category_name_2[i] == arr_menu[17]) { arr_score[i] += 2; }
+            // 비나 눈 올때 2점 부여
+        }
+
+        arr_score_from = Array.from(new Set(arr_score)); // 중복값 제외 전역변수 설정 
+        arr_score_from.sort((a, b) => b - a); // 내림차순 정렬
     }
 
     // 주소 모달창
@@ -335,75 +421,7 @@ window.onload = function () {
     document.querySelector('.modal_close2').addEventListener('click', offClick2);
 
 
-    // 태균
-
-    var arr_score; // 점수 배열 선언 
-    var arr_score_from = [];
-    var arr_menu = [ // 메뉴 배열 선언 26개 
-        "해물,생선", // 0 
-        "양꼬치",  //1
-        "국밥", // 2
-        "한정식", // 3
-        "초밥,롤",// 4
-        "일본식라면", //5 
-        "일본식주점", //6
-        "버거킹", //7 
-        "국수", // 8
-        "호프,요리주점", //9
-        "제과,베이커리", // 10
-        "육류,고기", //11
-        "떡볶이", // 12
-        "인도음식", // 13
-        "맥도날드", // 14 
-        "동남아음식", // 15
-        "감자탕", // 16
-        "곰탕", // 17
-        "일식집", // 18
-        "피자", // 19
-        "교촌치킨", //20
-        "BHC치킨", // 21
-        "퓨전한식", // 22
-        "샌드위치", // 23
-        "아이스크림", // 24
-        "맘스터치" // 25
-    ];
-    function scoreInit() {
-        arr_score = []; // 초기화
-        for (i = 0; i < cateNum; i++) {
-            arr_score[i] = 0;   // 검색된 수 만큼 점수 배열에 0 넣기 
-        }
-    }
-    function scoreAdd(data) { //  날씨에 따른 음식 추천 함수 
-        for (i = 0; i < cateNum; i++) {
-            if (data.response.body.items.item[24].fcstValue >= 27) {  // 27도 이상이면 
-                if (arr_category_name_2[i] == arr_menu[8] || arr_category_name_2[i] == arr_menu[15] || arr_category_name_2[i] == arr_menu[24] || arr_category_name_2[i] == arr_menu[13]) { arr_score[i] += 3; } //더운 날씨에 어울리는 음식 3점 부여
-            }
-
-            if (data.response.body.items.item[24].fcstValue <= 26 || data.response.body.items.item[24].fcstValue >= 20) { // 날씨 20~26도
-                if (arr_category_name_2[i] == arr_menu[4] || arr_category_name_2[i] == arr_menu[7] || arr_category_name_2[i] == arr_menu[10] || arr_category_name_2[i] == arr_menu[11] || arr_category_name_2[i] == arr_menu[12] || arr_category_name_2[i] == arr_menu[14]
-                    || arr_category_name_2[i] == arr_menu[18] || arr_category_name_2[i] == arr_menu[19] || arr_category_name_2[i] == arr_menu[20] || arr_category_name_2[i] == arr_menu[21] || arr_category_name_2[i] == arr_menu[22] || arr_category_name_2[i] == arr_menu[23] || arr_category_name_2[i] == arr_menu[25]) {
-                    arr_score[i] += 3;
-                } // 선선한 날씨에 어울리는 음식에 3점 부여 
-            }
-
-            if (data.response.body.items.item[24].fcstValue <= 19) {
-                if (arr_category_name_2[i] == arr_menu[0] || arr_category_name_2[i] == arr_menu[1] || arr_category_name_2[i] == arr_menu[2] || arr_category_name_2[i] == arr_menu[5] || arr_category_name_2[i] == arr_menu[6] || arr_category_name_2[i] == arr_menu[9] || arr_category_name_2[i] == arr_menu[16] || arr_category_name_2[i] == arr_menu[17]) {
-                    arr_score[i] += 3;
-                } // 추운 날씨에 어울리는 음식 3점 부여 
-            }
-
-
-            if (data.response.body.items.item[6].fcstValue == 0) {
-                if (arr_category_name_2[i] == arr_menu[3] || arr_category_name_2[i] == arr_menu[4] || arr_category_name_2[i] == arr_menu[7] || arr_category_name_2[i] == arr_menu[10] || arr_category_name_2[i] == arr_menu[14] || arr_category_name_2[i] == arr_menu[18] || arr_category_name_2[i] == arr_menu[19] || arr_category_name_2[i] == arr_menu[22] || arr_category_name_2[i] == arr_menu[23] || arr_category_name_2[i] == arr_menu[25]) { arr_score[i] += 1; }
-                // 강수 없을 때 1점 부여
-            }
-
-            else if (arr_category_name_2[i] == arr_menu[2] || arr_category_name_2[i] == arr_menu[5] || arr_category_name_2[i] == arr_menu[6] || arr_category_name_2[i] == arr_menu[9] || arr_category_name_2[i] == arr_menu[16] || arr_category_name_2[i] == arr_menu[17]) { arr_score[i] += 2; }
-            // 비나 눈 올때 2점 부여
-        }
-        arr_score_from = Array.from(new Set(arr_score)); // 중복값 제외 전역변수 설정 
-        arr_score_from.sort((a, b) => b - a); // 내림차순 정렬
-    }
+    
     var thisCount = 0;
     function numberRoom() { // score배열 내림차순(큰값부터)으로 방 번호 찾는 함수 
         while (true) {
