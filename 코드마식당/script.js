@@ -384,6 +384,7 @@ window.onload = function () {
         }
         else { reco(recoNum); } // url값 넣기 
     }
+    document.getElementById('random_button').addEventListener('click', randomWeather);
 
     // 메인화면에서 추천버튼을 눌렀을 때 작동하는 function입니다. 랜덤으로 추천합니다.
     function randomGo() {
@@ -391,6 +392,7 @@ window.onload = function () {
         var recoNum = Math.floor(Math.random() * cateNum);  // 랜덤으로 식당 번호를 추출
         reco(recoNum);
     }
+
 
     // 주소 검색창 열기
     function addSearchOn() {
@@ -442,31 +444,21 @@ window.onload = function () {
     }
     document.getElementById('complete_search_btn').addEventListener('click', address_search);
 
+
     // 옵션 모달창 
-    //  -> 주소 모달창에서 이름만 조금 바꿔서 똑같이 만들었더니 이것만 먹히고 주소 모달창이 안 먹혀요..!  이 부분은 너무 어려워서 손을 못 댔습니다 도와주세용..
-    // window.onload가 2개 있어서 아래 있는것만 적용되서 주소창이 안눌렸던거라 기존 window.onload 안에 추가된 onClick,offClick을 넣어주고
-    // 위에 onClick, offClick이 있으니 이름을 살짝 바꿔준 뒤
-    function onClick2() {
+    function optionOn() {
         document.querySelector('.modal_wrap2').style.display = 'block';
         document.querySelector('.black_bg2').style.display = 'block';
     }
-    function offClick2() {
+    document.getElementById('option_btn').addEventListener('click', optionOn);
+
+    function optionOff() {
         document.querySelector('.modal_wrap2').style.display = 'none';
         document.querySelector('.black_bg2').style.display = 'none';
     }
-
-    // 해당되는 id나 class를 눌렀을때 위 함수가 적용되게 바꿔준 이름으로 아래를 수정
-    document.getElementById('option_btn').addEventListener('click', onClick2);
-    document.querySelector('.modal_close2').addEventListener('click', offClick2);
-
+    document.querySelector('.modal_close2').addEventListener('click', optionOff);
 
     
-    
-
-    
-
-    document.getElementById('random_button').addEventListener('click', randomWeather);
-
     // 옵션 완료 버튼
     function complete_option() {
         document.getElementById('box_child1').innerHTML = null;
