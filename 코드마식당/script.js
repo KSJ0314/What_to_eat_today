@@ -252,6 +252,7 @@ window.onload = function () {
 
 
         $.getJSON(
+            // serviceKey=KEY 부분에는 발급받은 실제 key를 입력해야합니다.
             "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=KEY&pageNo=1&numOfRows=1000&dataType=JSON&base_date=" + todayString + "&base_time=" + currentTime + "&nx=" + xy.x + "&ny=" + xy.y + "",
             function (data) {
                 iconInit(data); // 아이콘 생성
