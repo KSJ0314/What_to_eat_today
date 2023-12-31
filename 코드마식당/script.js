@@ -165,14 +165,14 @@ window.onload = function () {
     var geocoder = new kakao.maps.services.Geocoder();
 
     // 식당 정보(url)을 화면에 띄워주고 지도에 해당 식당을 표시해주는 function입니다.
-    function but(urlnum) {
+    function reco(recoNum) {
 
         // url을 iframe으로 화면에 띄워줍니다.
         // iframe은 페이지에 내부에 다른 html페이지를 포함시키는 태그입니다. 사용하지 않는것을 권고하니 주의가 필요합니다.
-        document.querySelector('#box_child1').innerHTML = "<iframe src='" + arr_place_url[urlnum] + "'></iframe>";
+        document.querySelector('#box_child1').innerHTML = "<iframe src='" + arr_place_url[recoNum] + "'></iframe>";
 
         // 주소로 좌표를 검색합니다
-        geocoder.addressSearch(arr_address_name[urlnum], function (result, status) {
+        geocoder.addressSearch(arr_address_name[recoNum], function (result, status) {
             // 정상적으로 검색이 완료됐으면 
             if (status === kakao.maps.services.Status.OK) {
 
@@ -284,9 +284,8 @@ window.onload = function () {
         document.getElementById('weather').innerHTML = '<i class="fa-solid fa-' + weather + ' fa-fade fa-sm"></i>';
     }
 
-    var arr_score; // 검색된 식당 각각에 해당되는 점수 배열 선언 
-    var arr_score_from = [];    // 점수의 종류
-    
+    var arr_score = []; // 검색된 식당 각각에 해당되는 점수 배열 선언 
+
     // 날씨에 따라 음식에 점수를 부여하는 function입니다. 개발자 임의로 특정 카테고리에 일정 점수를 부여했습니다.
     // ai를 학습하시는 분이라면 검증된 데이터로 점수를 부여하도록 수정해보면 좋을 것 같습니다.
     function scoreInit(data) {
@@ -318,7 +317,6 @@ window.onload = function () {
             "아이스크림", // 24
             "맘스터치" // 25
         ];
-        arr_score = []; // 초기화
         // 검색된 수 만큼 점수 배열에 0 넣기 
         for (i = 0; i < cateNum; i++) {
             arr_score[i] = 0;
@@ -351,14 +349,51 @@ window.onload = function () {
             else if (arr_category_name_2[i] == arr_menu[2] || arr_category_name_2[i] == arr_menu[5] || arr_category_name_2[i] == arr_menu[6] || arr_category_name_2[i] == arr_menu[9] || arr_category_name_2[i] == arr_menu[16] || arr_category_name_2[i] == arr_menu[17]) { arr_score[i] += 2; }
             // 비나 눈 올때 2점 부여
         }
-
-        arr_score_from = Array.from(new Set(arr_score)); // 중복값 제외 전역변수 설정 
-        arr_score_from.sort((a, b) => b - a); // 내림차순 정렬
     }
 
-    // 주소 모달창
+    var thisCount = 0;  // 몇 번 검색했는지 나타낼 변수입니다.
 
-    function onClick() {
+    // arr_score에서 가장 높은 값을 갖는 index를 찾는 function입니다.
+    function max_arr_score() {
+        var maxScore = arr_score[0];    // 가장 높은 값을 저장하는 변수
+        var maxScoreIndex = 0;  // 가장 높은 값의 index를 저장하는 변수
+        for (i in arr_score){
+            if (maxScore < arr_score[i]){
+                maxScore = arr_score[i];
+                maxScoreIndex = i;
+            }
+        }
+
+        if (maxScore == -1){
+            return -1;
+        } else {
+            arr_score[maxScoreIndex] = -1; // 다시 검색하지 않게 -1로 변경
+            thisCount++;
+            document.getElementById('count').innerHTML = thisCount + " / " + cateNum;
+            return maxScoreIndex;
+        }
+    }
+
+    // 메인화면에서 추천버튼을 눌렀을 때 작동하는 function입니다. 날씨에 따라 추천합니다. (default)
+    function randomWeather() {
+        document.getElementById('box_child1').style.backgroundImage = "none";
+        var recoNum = max_arr_score(); // 가장 높은 점수의 식당 번호를 추출
+        if (recoNum == -1) { // 모든 식당을 추출한 경우
+            document.getElementById('box_child1').innerHTML = null;
+            document.getElementById('box_child1').style.backgroundImage = "url('/imges/main_end.jpg')";
+        }
+        else { reco(recoNum); } // url값 넣기 
+    }
+
+    // 메인화면에서 추천버튼을 눌렀을 때 작동하는 function입니다. 랜덤으로 추천합니다.
+    function randomGo() {
+        document.getElementById('box_child1').style.backgroundImage = "none";
+        var recoNum = Math.floor(Math.random() * cateNum);  // 랜덤으로 식당 번호를 추출
+        reco(recoNum);
+    }
+
+    // 주소 검색창 열기
+    function addSearchOn() {
         document.querySelector('.modal_wrap').style.display = 'block';
         document.querySelector('.black_bg').style.display = 'block';
         document.getElementById('search_address').value = null;
@@ -380,10 +415,16 @@ window.onload = function () {
             coo2add(latlng, 'search_address');
         });
     }
-    function offClick() {
+    document.getElementById('modal_btn').addEventListener('click', addSearchOn);
+
+    // 주소 검색창 닫기
+    function addSearchOff() {
         document.querySelector('.modal_wrap').style.display = 'none';
         document.querySelector('.black_bg').style.display = 'none';
     }
+    document.querySelector('.modal_close').addEventListener('click', addSearchOff);
+
+    // 주소 검색 버튼
     function address_search() {
         if (document.getElementById('search_address').value == "") {
             return;
@@ -399,8 +440,6 @@ window.onload = function () {
         document.querySelector('.modal_wrap').style.display = 'none';
         document.querySelector('.black_bg').style.display = 'none';
     }
-    document.getElementById('modal_btn').addEventListener('click', onClick);
-    document.querySelector('.modal_close').addEventListener('click', offClick);
     document.getElementById('complete_search_btn').addEventListener('click', address_search);
 
     // 옵션 모달창 
@@ -422,39 +461,9 @@ window.onload = function () {
 
 
     
-    var thisCount = 0;
-    function numberRoom() { // score배열 내림차순(큰값부터)으로 방 번호 찾는 함수 
-        while (true) {
-            if (arr_score_from.length) { // num배열 길이만큼 slice할때마다 길이가 줄어듬 
-                for (i in arr_score) { // score 배열 길이 만큼 반복
-                    if (arr_score_from[0] == arr_score[i]) { // num 0번에 해당하는 score배열을 찾으면?
-                        arr_score[i] = -1; // 다시 검색하지 않게 -1로 변경
-                        thisCount++;
-                        document.getElementById('count').innerHTML = thisCount + " / " + cateNum;
-                        return i; // score 방번호 출력
-                    }
-                }
-                arr_score_from.splice(0, 1); // num [0] 없애고 num[1]이 num=[0]으로 바뀜
-                continue; // 그리고 계속하기...
-            }
-            return -1;
-        }
-    }
-    function randomWeather() { // 날씨가 적용 됐을 때 함수
-        document.getElementById('box_child1').style.backgroundImage = "none";
-        var url_Weather = numberRoom(); // url에 numberRoom index값 넣기
-        if (url_Weather == -1) { // urlWeather 방을 아예 못찾았을때는 
-            document.getElementById('box_child1').innerHTML = null;
-            document.getElementById('box_child1').style.backgroundImage = "url('/imges/main_end.jpg')";
-        }
-        else { but(url_Weather); } // url값 넣기 
-    }
+    
 
-    function randomGo() {
-        document.getElementById('box_child1').style.backgroundImage = "none";
-        var urlran = Math.floor(Math.random() * cateNum);
-        but(urlran);
-    }
+    
 
     document.getElementById('random_button').addEventListener('click', randomWeather);
 
@@ -473,7 +482,7 @@ window.onload = function () {
         }
         if (radio_para != document.getElementById('position').value) {
             radio_para = document.getElementById('position').value;
-            mapinit(latlon, radio_para);
+            mapinit();
         }
         for (i = 0; i < cateNum; i++) {
             if (!document.getElementById('koreanFood').checked && arr_category_name_1[i] == "한식") {
