@@ -12,27 +12,12 @@
    <img style="width:300px;" alt="상장" src="https://github.com/KSJ0314/What_to_eat_today/assets/132119447/99a1da07-c12f-479c-9ae9-c4f00b012190">
 </kbd>
 
-
-
 ---
 
 ## :blue_book: 프로젝트 요약
 날씨에 따라 맞춤형 식당을 추천해주는 사이트입니다.
 
 [사이트 바로가기](https://cmkj0314.neocities.org/)
-
----
-
-## :clock3: 개발 기간
-* 23.07.24 ~ 23.8.06
-
----
-
-## :orange_book: 프로젝트 소개
-
-![오늘 뭐 먹지 소개 1](https://github.com/KSJ0314/codemasickdang/assets/132119447/97d1cd33-f624-416e-b039-25c3aaba6018)
-![오늘 뭐 먹지 소개 2](https://github.com/KSJ0314/codemasickdang/assets/132119447/5e3f0299-12ba-4b79-9473-5d80d5d259a6)
-![오늘 뭐 먹지 소개 3](https://github.com/KSJ0314/codemasickdang/assets/132119447/bcac43fc-80aa-48de-ba24-54c143d369a2)
 
 ---
 
@@ -52,6 +37,20 @@ API라는 단어 조차 생소했던 초보자들이 제작한 프로젝트인 �
    : 지도를 생성하거나 마커를 표시하거나 클릭하는 등의 기능을 가진 API입니다.
 
    [>> 카카오 지도/로컬 API 사용하기](https://velog.io/@ksj0314/JavaScript-%EC%B9%B4%EC%B9%B4%EC%98%A4-API-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
+
+---
+
+## :clock3: 개발 기간
+* 23.07.24 ~ 23.8.06
+
+---
+
+## :orange_book: 프로젝트 소개
+
+![오늘 뭐 먹지 소개 1](https://github.com/KSJ0314/codemasickdang/assets/132119447/97d1cd33-f624-416e-b039-25c3aaba6018)
+![오늘 뭐 먹지 소개 2](https://github.com/KSJ0314/codemasickdang/assets/132119447/5e3f0299-12ba-4b79-9473-5d80d5d259a6)
+![오늘 뭐 먹지 소개 3](https://github.com/KSJ0314/codemasickdang/assets/132119447/bcac43fc-80aa-48de-ba24-54c143d369a2)
+
 ---
 
 ## :star: 추가 사항
