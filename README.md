@@ -44,8 +44,8 @@ API라는 단어 조차 생소했던 초보자들이 제작한 프로젝트인 �
 <ol>
    <li>
       기상청_단기예보 조회서비스<br>
-      : 공공 데이터 포털(data.go.kr)에서 제공하는 오픈 API입니다.
-      [>> 기상청_단기예보 조회서비스 API 사용하기](https://velog.io/@ksj0314/%EA%B8%B0%EC%83%81%EC%B2%AD%EB%8B%A8%EA%B8%B0%EC%98%88%EB%B3%B4-%EC%A1%B0%ED%9A%8C%EC%84%9C%EB%B9%84%EC%8A%A4-API-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
+      : 공공 데이터 포털(data.go.kr)에서 제공하는 오픈 API입니다.<br>
+      [기상청_단기예보 조회서비스 API 사용하기](https://velog.io/@ksj0314/%EA%B8%B0%EC%83%81%EC%B2%AD%EB%8B%A8%EA%B8%B0%EC%98%88%EB%B3%B4-%EC%A1%B0%ED%9A%8C%EC%84%9C%EB%B9%84%EC%8A%A4-API-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
    </li>
    <li>
       카카오 로컬 API<br>
