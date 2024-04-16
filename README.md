@@ -1,11 +1,11 @@
-![Group 3](https://github.com/KSJ0314/What_to_eat_today/assets/132119447/c328178a-ba92-4cd6-b8cf-3836b5e6a41d)## 📗 프로젝트 개요
+## 📗 프로젝트 개요
 
 * 이 프로젝트는 광전IT에서 주최한 코드마스터 선발대회 참여를 위해 제작되어 장려상을 수상한 프로젝트입니다.
 * 대회 주제에 따라 오픈 API 활용을 주 목표로 기획되었습니다.
 * 자바 책 한권도 채 끝내지 못한 개발 6주차 꿈나무들의 프로젝트라 `CSS`로 디자인한 `Html`과 `JS` 기능 정도 구현된 프로젝트입니다.
 * 어느 정도의 `CSS`와 `JS`를 이제 막 시작한 단계에서 만들 수 있는 프로젝트로 개발 학습 초기인 분들께 좋은 참고자료가 되기를 바랍니다.
 
-![](https://velog.velcdn.com/images/ksj0314/post/fd4fde1d-f5e6-487b-bc08-c21635fd354f/image.png)
+![Group 3](https://github.com/KSJ0314/What_to_eat_today/assets/132119447/c328178a-ba92-4cd6-b8cf-3836b5e6a41d)
 
 ---
 
