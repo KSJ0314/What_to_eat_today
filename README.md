@@ -5,7 +5,7 @@
 * 자바 책 한권도 채 끝내지 못한 개발 6주차 꿈나무들의 프로젝트라 `CSS`로 디자인한 `Html`과 `JS` 기능 정도 구현된 프로젝트입니다.
 * 어느 정도의 `CSS`와 `JS`를 이제 막 시작한 단계에서 만들 수 있는 프로젝트로 개발 학습 초기인 분들께 좋은 참고자료가 되기를 바랍니다.
 
-![Group 3](https://github.com/KSJ0314/What_to_eat_today/assets/132119447/c328178a-ba92-4cd6-b8cf-3836b5e6a41d)
+![](https://velog.velcdn.com/images/ksj0314/post/6475c6c5-b7e3-4f37-99e6-41a95ba115f0/image.png)
 
 ---
 
