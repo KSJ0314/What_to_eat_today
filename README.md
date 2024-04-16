@@ -1,32 +1,27 @@
-## :ledger: 프로젝트 개요
-<ul>
-   <li>이 프로젝트는 광전IT에서 주최한 코드마스터 선발대회 참여를 위해 제작되어 장려상을 수상한 프로젝트입니다.</li>
-   <li>대회 주제에 따라 오픈 API 활용을 주 목표로 기획되었습니다.</li> 
-   <li>자바 책 한권도 채 끝내지 못한 개발 6주차 꿈나무들의 프로젝트라 <kbd>CSS</kbd>로 디자인한 <kbd>Html</kbd>과 <kbd>JS</kbd> 기능 정도 구현된 프로젝트입니다.</li>
-   <li>어느 정도의 <kbd>CSS</kbd>와 <kbd>JS</kbd>를 이제 막 시작한 단계에서 만들 수 있는 프로젝트로 개발 학습 초기인 분들께 좋은 참고자료가 되기를 바랍니다.</li>
-</ul>   
-&emsp;&emsp;<kbd style="width:300px; border: 1px solid ligthgray;">
-   <img style="width:300px;" alt="포스터" src="https://github.com/KSJ0314/What_to_eat_today/assets/132119447/07d32d4e-7a6b-49be-8763-4f1c753155c7">
-</kbd>
-&emsp;&emsp;<kbd style="width:300px; border: 1px solid ligthgray;">
-   <img style="width:300px;" alt="상장" src="https://github.com/KSJ0314/What_to_eat_today/assets/132119447/99a1da07-c12f-479c-9ae9-c4f00b012190">
-</kbd>
+![Group 3](https://github.com/KSJ0314/What_to_eat_today/assets/132119447/c328178a-ba92-4cd6-b8cf-3836b5e6a41d)## 📗 프로젝트 개요
+
+* 이 프로젝트는 광전IT에서 주최한 코드마스터 선발대회 참여를 위해 제작되어 장려상을 수상한 프로젝트입니다.
+* 대회 주제에 따라 오픈 API 활용을 주 목표로 기획되었습니다.
+* 자바 책 한권도 채 끝내지 못한 개발 6주차 꿈나무들의 프로젝트라 `CSS`로 디자인한 `Html`과 `JS` 기능 정도 구현된 프로젝트입니다.
+* 어느 정도의 `CSS`와 `JS`를 이제 막 시작한 단계에서 만들 수 있는 프로젝트로 개발 학습 초기인 분들께 좋은 참고자료가 되기를 바랍니다.
+
+![](https://velog.velcdn.com/images/ksj0314/post/fd4fde1d-f5e6-487b-bc08-c21635fd354f/image.png)
 
 ---
 
-## :blue_book: 프로젝트 요약
+## 📘 프로젝트 요약
 날씨에 따라 맞춤형 식당을 추천해주는 사이트입니다.
 
 [>> 사이트 바로가기](https://cmkj0314.neocities.org/)
 
 ---
 
-## :clock3: 개발 기간
+## ⏱️ 개발 기간
 * 23.07.24 ~ 23.8.06
 
 ---
 
-## :closed_book: API
+## 📕 API
 
 "오픈 API를 활용한 웹 또는 앱 개발"이라는 대회 주제에 따라 여러 API를 활용했습니다.<br>
 API라는 단어 조차 생소했던 초보자들이 제작한 프로젝트인 만큼 누구나 사용하는데에 어려움이 없을 것입니다.
@@ -46,7 +41,7 @@ API라는 단어 조차 생소했던 초보자들이 제작한 프로젝트인 �
 
 ---
 
-## :orange_book: 프로젝트 소개
+## 📙 프로젝트 소개
 
 ![오늘 뭐 먹지 소개 1](https://github.com/KSJ0314/codemasickdang/assets/132119447/97d1cd33-f624-416e-b039-25c3aaba6018)
 ![오늘 뭐 먹지 소개 2](https://github.com/KSJ0314/codemasickdang/assets/132119447/5e3f0299-12ba-4b79-9473-5d80d5d259a6)
@@ -54,7 +49,7 @@ API라는 단어 조차 생소했던 초보자들이 제작한 프로젝트인 �
 
 ---
 
-## :star: 추가 사항
+## ✨ 추가 사항
 
 * 보완 기간 : 23.08.10~23.08.17
 
