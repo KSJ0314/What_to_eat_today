@@ -51,7 +51,7 @@ window.onload = function () {
 
     var map = []; // 메인 지도창, 주소 설정 지도창
     // 지도를 생성하는 function입니다.
-    function mapCreate(id, lv, num) {
+    function createMap(id, lv, num) {
         var mapContainer = document.getElementById(id), // 지도를 표시할 div 
             mapOption = {
                 center: new kakao.maps.LatLng(latlon.y, latlon.x), // 지도의 중심좌표
@@ -61,7 +61,7 @@ window.onload = function () {
         // 지도를 생성합니다    
         map[num] = new kakao.maps.Map(mapContainer, mapOption);
     }
-    mapCreate('mapBox', 2, 0);
+    createMap('mapBox', 2, 0);
 
     var imageSrc = 'imges/maker.png', // 마커이미지의 주소입니다    
         imageSize = new kakao.maps.Size(70, 70), // 마커이미지의 크기입니다
@@ -69,14 +69,14 @@ window.onload = function () {
 
     var marker = [];  // main지도 마커, 주소창 마커
     // 마커를 생성하는 function입니다.
-    function makerCreate(num) {
+    function createMarker(num) {
         marker[num] = new kakao.maps.Marker({
             map: map[num],
             position: new kakao.maps.LatLng(latlon.y, latlon.x),
             image: new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
         });
     }
-    makerCreate(0); // 기존 마커 없애기를 구현하기 위해 marker 초기화
+    createMarker(0); // 기존 마커 없애기를 구현하기 위해 marker 초기화
 
     // 지도에 마커를 표시하는 함수입니다
     function displayMarker(place, num) {
@@ -98,7 +98,7 @@ window.onload = function () {
     var cateNum = 0;
 
     // 카카오 카테고리 검색 rest api, 좌표값은 주지 않아서 지도를 띄우려면 주소->좌표 변환이 필요합니다.
-    function categorySerch(latlon, rad) {
+    function searchCategory(latlon, rad) {
         arr_address_name = [];  // 주소
         arr_place_url = []; // 식당 정보 페이지 url
         arr_category_name = []; // 카테고리 풀네임
@@ -115,20 +115,19 @@ window.onload = function () {
                 url: "https://dapi.kakao.com/v2/local/search/category.json?category\_group\_code=FD6&page=" + j + "&x=" + latlon.x + "&y=" + latlon.y + "&radius=" + rad + "",
                 headers: { Authorization: "KEY" },  // 카카오 developers에서 발급받은 API key를 입력해주세요.
                 async: false // ajax 2개 이상 사용시 필요
-            })
-                .done(function (msg) {
-                    cateNum += msg.documents.length;    // 검색 된 수만큼 값 추가
-                    for (var i = 0; i < msg.documents.length; i++) {
-                        arr_address_name.push(msg.documents[i].address_name); // 주소에 값 추가
-                        arr_place_url.push(msg.documents[i].place_url); // url에 값 추가
-                        arr_category_name = msg.documents[i].category_name.split(" > ");  // 카테고리 full name을 찢어서 저장
-                        arr_category_name_1.push(arr_category_name[1]); // 카테고리 항목 1에 값 추가
-                        arr_category_name_2.push(arr_category_name[2]); // 카테고리 항목 2에 값 추가
-                    }
-                    if (msg.meta.is_end) {
-                        cateRun = false;
-                    }
-                });
+            }).done(function (msg) {
+                cateNum += msg.documents.length;    // 검색 된 수만큼 값 추가
+                for (var i = 0; i < msg.documents.length; i++) {
+                    arr_address_name.push(msg.documents[i].address_name); // 주소에 값 추가
+                    arr_place_url.push(msg.documents[i].place_url); // url에 값 추가
+                    arr_category_name = msg.documents[i].category_name.split(" > ");  // 카테고리 full name을 찢어서 저장
+                    arr_category_name_1.push(arr_category_name[1]); // 카테고리 항목 1에 값 추가
+                    arr_category_name_2.push(arr_category_name[2]); // 카테고리 항목 2에 값 추가
+                }
+                if (msg.meta.is_end) {
+                    cateRun = false;
+                }
+            });
         }
         document.getElementById('count').innerHTML = "0 / " + cateNum;  // 총 검색 수를 메인화면에 출력하기 위한 구문
 
@@ -165,14 +164,14 @@ window.onload = function () {
     var geocoder = new kakao.maps.services.Geocoder();
 
     // 식당 정보(url)을 화면에 띄워주고 지도에 해당 식당을 표시해주는 function입니다.
-    function reco(recoNum) {
+    function showPlace(placeNum) {
 
         // url을 iframe으로 화면에 띄워줍니다.
         // iframe은 페이지에 내부에 다른 html페이지를 포함시키는 태그입니다. 사용하지 않는것을 권고하니 주의가 필요합니다.
-        document.querySelector('#box_child1').innerHTML = "<iframe src='" + arr_place_url[recoNum] + "'></iframe>";
+        document.querySelector('#box_child1').innerHTML = "<iframe src='" + arr_place_url[placeNum] + "'></iframe>";
 
         // 주소로 좌표를 검색합니다
-        geocoder.addressSearch(arr_address_name[recoNum], function (result, status) {
+        geocoder.addressSearch(arr_address_name[placeNum], function (result, status) {
             // 정상적으로 검색이 완료됐으면 
             if (status === kakao.maps.services.Status.OK) {
 
@@ -202,7 +201,7 @@ window.onload = function () {
         document.getElementById('box_child1').style.backgroundImage = "url('/imges/main_WeatherLoading.png')";  // 로딩 중 이미지 출력
         displayMarker(latlon, 0);   // 메인화면 지도에 마커 표시
         map[0].setCenter(new kakao.maps.LatLng(latlon.y, latlon.x));    // 메인화면 지도 중심변경
-        categorySerch(latlon, radio_para);  // 식당 검색
+        searchCategory(latlon, radio_para);  // 식당 검색
         getWeather(dfs_xy_conv(latlon.y, latlon.x));    // 날씨 검색
         coo2add(latlon, 'modal_btn');   // 메인화면에 주소 표시
     }
@@ -376,34 +375,34 @@ window.onload = function () {
     }
 
     // 메인화면에서 추천버튼을 눌렀을 때 작동하는 function입니다. 날씨에 따라 추천합니다. (default)
-    function randomWeather() {
+    function showForWeather() {
         document.getElementById('box_child1').style.backgroundImage = "none";
-        var recoNum = max_arr_score(); // 가장 높은 점수의 식당 번호를 추출
-        if (recoNum == -1) { // 모든 식당을 추출한 경우
+        var placeNum = max_arr_score(); // 가장 높은 점수의 식당 번호를 추출
+        if (placeNum == -1) { // 모든 식당을 추출한 경우
             document.getElementById('box_child1').innerHTML = null;
             document.getElementById('box_child1').style.backgroundImage = "url('/imges/main_end.jpg')";
         }
-        else { reco(recoNum); } // url값 넣기 
+        else { showPlace(placeNum); } // url값 넣기 
     }
-    document.getElementById('random_button').addEventListener('click', randomWeather);
+    document.getElementById('random_button').addEventListener('click', showForWeather);
 
     // 메인화면에서 추천버튼을 눌렀을 때 작동하는 function입니다. 랜덤으로 추천합니다.
-    function randomGo() {
+    function showForRandom() {
         document.getElementById('box_child1').style.backgroundImage = "none";
-        var recoNum = Math.floor(Math.random() * cateNum);  // 랜덤으로 식당 번호를 추출
-        reco(recoNum);
+        var placeNum = Math.floor(Math.random() * cateNum);  // 랜덤으로 식당 번호를 추출
+        showPlace(placeNum);
     }
 
 
     // 주소 검색창 열기
-    function addSearchOn() {
+    function addressSearchOn() {
         document.querySelector('.modal_wrap').style.display = 'block';
         document.querySelector('.black_bg').style.display = 'block';
         document.getElementById('search_address').value = null;
         // 주소 검색창 지도 띄우기
-        mapCreate('search_map', 5, 1);
+        createMap('search_map', 5, 1);
         // 마커 띄우기
-        makerCreate(1);
+        createMarker(1);
 
         // 지도에 클릭 이벤트를 등록합니다
         kakao.maps.event.addListener(map[1], 'click', function (mouseEvent) {
@@ -418,17 +417,17 @@ window.onload = function () {
             coo2add(latlng, 'search_address');
         });
     }
-    document.getElementById('modal_btn').addEventListener('click', addSearchOn);
+    document.getElementById('modal_btn').addEventListener('click', addressSearchOn);
 
     // 주소 검색창 닫기
-    function addSearchOff() {
+    function addressSearchOff() {
         document.querySelector('.modal_wrap').style.display = 'none';
         document.querySelector('.black_bg').style.display = 'none';
     }
-    document.querySelector('.modal_close').addEventListener('click', addSearchOff);
+    document.querySelector('.modal_close').addEventListener('click', addressSearchOff);
 
     // 주소 검색 버튼
-    function address_search() {
+    function addressSearch() {
         if (document.getElementById('search_address').value == "") {
             return;
         }
@@ -443,7 +442,7 @@ window.onload = function () {
         document.querySelector('.modal_wrap').style.display = 'none';
         document.querySelector('.black_bg').style.display = 'none';
     }
-    document.getElementById('complete_search_btn').addEventListener('click', address_search);
+    document.getElementById('complete_search_btn').addEventListener('click', addressSearch);
 
 
     // 옵션 모달창 
@@ -461,17 +460,17 @@ window.onload = function () {
 
     
     // 옵션 완료 버튼
-    function complete_option() {
+    function completeOption() {
         document.getElementById('box_child1').innerHTML = null;
         document.getElementById('box_child1').innerHTML = '<div id="main_count"></div>';
         document.querySelector('.modal_wrap2').style.display = 'none';
         document.querySelector('.black_bg2').style.display = 'none';
         if (document.getElementById('randomm').checked) {
-            document.getElementById('random_button').removeEventListener('click', randomWeather);
-            document.getElementById('random_button').addEventListener('click', randomGo);
+            document.getElementById('random_button').removeEventListener('click', showForWeather);
+            document.getElementById('random_button').addEventListener('click', showForRandom);
         } else {
-            document.getElementById('random_button').removeEventListener('click', randomGo);
-            document.getElementById('random_button').addEventListener('click', randomWeather);
+            document.getElementById('random_button').removeEventListener('click', showForRandom);
+            document.getElementById('random_button').addEventListener('click', showForWeather);
         }
         if (radio_para != document.getElementById('position').value) {
             radio_para = document.getElementById('position').value;
@@ -505,6 +504,6 @@ window.onload = function () {
             }
         }
     }
-    document.getElementById('complete_option_btn').addEventListener('click', complete_option);
+    document.getElementById('completeOption_btn').addEventListener('click', completeOption);
 
 };
