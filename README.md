@@ -1,3 +1,5 @@
+![](https://velog.velcdn.com/images/ksj0314/post/f86a16a4-c02c-4c3d-b211-f30c0a81a767/image.png)
+
 ## 📗 프로젝트 개요
 
 * 이 프로젝트는 광전IT에서 주최한 코드마스터 선발대회 참여를 위해 제작되어 장려상을 수상한 프로젝트입니다.
